@@ -19,6 +19,7 @@ import app.revanced.manager.ui.screens.MainScreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.koin.core.context.startKoin
 
 val Context.settings: DataStore<Preferences> by preferencesDataStore(name = "settings")
 

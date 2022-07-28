@@ -37,51 +37,34 @@ fun SettingsTempScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             ListItem(
-                modifier = Modifier.clickable { prefs.dynamicColor = !prefs.dynamicColor },
-                headlineText = { Text("Dynamic Color") },
+                modifier = Modifier.clickable { prefs.darklight = !prefs.darklight },
+                headlineText = { Text("Change theme") },
                 trailingContent = {
                     Switch(
-                        checked = prefs.dynamicColor,
-                        onCheckedChange = { prefs.dynamicColor = it })
+                        checked = prefs.darklight,
+                        onCheckedChange = { prefs.darklight = it })
                 }
             )
 
             ListItem(
-                modifier = Modifier.clickable(enabled = !prefs.dynamicColor) {
-                    prefs.midnightMode = !prefs.midnightMode
-                },
-                headlineText = { Text("Black background") },
+                modifier = Modifier.clickable { prefs.dynamicTheming = !prefs.dynamicTheming },
+                headlineText = { Text("Dynamic color") },
                 trailingContent = {
                     Switch(
-                        enabled = !prefs.dynamicColor,
-                        checked = prefs.midnightMode,
-                        onCheckedChange = { prefs.midnightMode = it }
-                    )
+                        checked = prefs.dynamicTheming,
+                        onCheckedChange = { prefs.dynamicTheming = it })
                 }
             )
 
             ListItem(
                 modifier = Modifier.clickable { prefs.autoUpdate = !prefs.autoUpdate },
-                headlineText = { Text("Auto Update") },
+                headlineText = { Text("Auto update") },
                 trailingContent = {
                     Switch(
                         checked = prefs.autoUpdate,
                         onCheckedChange = { prefs.autoUpdate = it })
                 }
             )
-            if (prefs.autoUpdate) {
-                Toast.makeText(
-                    context,
-                    "Auto Update is enabled",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                Toast.makeText(
-                    context,
-                    "Auto Update is disabled",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
         }
     }
 }

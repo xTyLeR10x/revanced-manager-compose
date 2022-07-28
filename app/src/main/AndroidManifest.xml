@@ -23,6 +23,7 @@
     </queries>
 
     <application
+        android:name=".ManagerApplication"
         android:allowBackup="true"
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
