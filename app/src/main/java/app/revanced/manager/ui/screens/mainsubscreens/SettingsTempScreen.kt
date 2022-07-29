@@ -1,21 +1,26 @@
 package app.revanced.manager.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import app.revanced.manager.R
+import app.revanced.manager.manager.PreferencesManager
 import app.revanced.manager.ui.models.SettingsViewModel
+import app.revanced.manager.ui.theme.Theme
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @Destination
@@ -36,14 +41,17 @@ fun SettingsTempScreen(
                 .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            
+            if (viewModel.showThemePicker) {
+                ThemePicker(
+                    onDismissRequest = viewModel::dismissThemePicker,
+                    onConfirm = viewModel::setTheme
+                )
+            }
+
             ListItem(
-                modifier = Modifier.clickable { prefs.darklight = !prefs.darklight },
-                headlineText = { Text("Change theme") },
-                trailingContent = {
-                    Switch(
-                        checked = prefs.darklight,
-                        onCheckedChange = { prefs.darklight = it })
-                }
+                modifier = Modifier.clickable { viewModel.showThemePicker() },
+                headlineText = { Text(stringResource(R.string.theme)) },
             )
 
             ListItem(
@@ -67,4 +75,51 @@ fun SettingsTempScreen(
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ThemePicker(
+    onDismissRequest: () -> Unit,
+    onConfirm: (Theme) -> Unit,
+    prefs: PreferencesManager = get()
+) {
+    var selectedTheme by remember { mutableStateOf(prefs.theme) }
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        title = { Text(stringResource(R.string.theme)) },
+        text = {
+            Column {
+                Theme.values().forEach { theme ->
+                    Row(
+                        modifier = Modifier.clickable { selectedTheme = theme },
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            theme.displayName,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+
+                        Spacer(Modifier.weight(1f, true))
+
+                        RadioButton(
+                            selected = theme == selectedTheme,
+                            onClick = { selectedTheme = theme }
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm(selectedTheme)
+                    onDismissRequest()
+                }
+            ) {
+                Text(stringResource(R.string.apply))
+            }
+        }
+    )
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import app.revanced.manager.manager.PreferencesManager
+import app.revanced.manager.ui.theme.Theme
 
 class SettingsViewModel(
     val prefs: PreferencesManager
@@ -18,5 +19,9 @@ class SettingsViewModel(
 
     fun dismissThemePicker() {
         showThemePicker = false
+    }
+
+    fun setTheme(theme: Theme) {
+        prefs.theme = theme
     }
 }
