@@ -11,15 +11,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.manager.PreferencesManager
-import com.jamal.composeprefs3.ui.GroupHeader
-import com.jamal.composeprefs3.ui.Divider
 import app.revanced.manager.ui.models.SettingsViewModel
 import app.revanced.manager.ui.theme.Theme
+import com.jamal.composeprefs3.ui.Divider
+import com.jamal.composeprefs3.ui.GroupHeader
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import org.koin.androidx.compose.get
@@ -68,6 +66,8 @@ fun SettingsTempScreen(
                 }
             )
 
+            Divider()
+
             ListItem(
                 modifier = Modifier.clickable(enabled = !prefs.dynamicTheming) {
                     prefs.amoledMode = !prefs.amoledMode
@@ -81,10 +81,7 @@ fun SettingsTempScreen(
                     )
                 }
             )
-            Divider()
 
-            Spacer(modifier = Modifier.padding(top = 16.dp))
-            
             GroupHeader(
                 title = "Sources"
             )
