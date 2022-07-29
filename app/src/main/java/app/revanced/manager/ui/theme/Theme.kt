@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -30,8 +31,21 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+private val AmoledColorScheme = darkColorScheme(
+    background = Color.Black,
+    surface = Color.Black,
+    primary = Color.LightGray,
+    onPrimary = Color.DarkGray,
+    secondary = Color.Gray,
+    onSecondary = Color.LightGray,
+    secondaryContainer = Color.DarkGray,
+    onSecondaryContainer = Color.White,
+    outline = Color.LightGray
+)
+
 @Composable
 fun ReVancedManagerTheme(
+    amoledTheme: Boolean = false,
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -42,7 +56,7 @@ fun ReVancedManagerTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorScheme
+        darkTheme -> if (amoledTheme) AmoledColorScheme else DarkColorScheme
         else -> LightColorScheme
     }
     val systemUiController = rememberSystemUiController()

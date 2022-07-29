@@ -68,6 +68,20 @@ fun SettingsTempScreen(
                 }
             )
 
+            ListItem(
+                modifier = Modifier.clickable(enabled = !prefs.dynamicTheming) {
+                    prefs.amoledMode = !prefs.amoledMode
+                },
+                headlineText = { Text(stringResource(R.string.amoled_mode)) },
+                trailingContent = {
+                    Switch(
+                        enabled = !prefs.dynamicTheming,
+                        checked = prefs.amoledMode,
+                        onCheckedChange = { prefs.amoledMode = it }
+                    )
+                }
+            )
+            
             GroupHeader(
                 title = "Sources"
             )

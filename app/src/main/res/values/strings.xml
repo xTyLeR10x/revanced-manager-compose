@@ -67,4 +67,5 @@
     <string name="patcher_notification_message">ReVanced Manager is patching</string>
     <string name="theme">Theme</string>
     <string name="apply">Apply</string>
+    <string name="amoled_mode">Amoled Mode</string>
 </resources>

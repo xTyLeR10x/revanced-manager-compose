@@ -31,8 +31,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             ReVancedManagerTheme(
-            darkTheme = prefs.theme == Theme.SYSTEM && isSystemInDarkTheme() || prefs.theme == Theme.DARK,
-            dynamicColor = prefs.dynamicTheming
+                amoledTheme = prefs.amoledMode,
+                darkTheme =
+                prefs.theme == Theme.SYSTEM && isSystemInDarkTheme() || prefs.theme == Theme.DARK,
+                dynamicColor = prefs.dynamicTheming
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

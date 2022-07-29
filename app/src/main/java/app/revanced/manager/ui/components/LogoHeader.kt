@@ -30,5 +30,5 @@ fun LogoHeader() {
         )
     }
 
-    Divider(Modifier.alpha(.5f))
+    Divider(Modifier.alpha(.3f))
 }
