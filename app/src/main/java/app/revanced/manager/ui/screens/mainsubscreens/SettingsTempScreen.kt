@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.manager.PreferencesManager
 import com.jamal.composeprefs3.ui.GroupHeader
@@ -31,7 +32,6 @@ import org.koin.androidx.compose.getViewModel
 fun SettingsTempScreen(
     viewModel: SettingsViewModel = getViewModel(),
 ) {
-    val context = LocalContext.current
     val prefs = viewModel.prefs
     Scaffold(
         modifier = Modifier,
@@ -81,6 +81,9 @@ fun SettingsTempScreen(
                     )
                 }
             )
+            Divider()
+
+            Spacer(modifier = Modifier.padding(top = 16.dp))
             
             GroupHeader(
                 title = "Sources"
