@@ -9,7 +9,7 @@ class PreferencesManager(
     sharedPreferences: SharedPreferences
 ) : BasePreferenceManager(sharedPreferences) {
     var theme by enumPreference("theme", Theme.SYSTEM)
-    var dynamicTheming by booleanPreference("dynamicTheming", false)
+    var dynamicTheming by booleanPreference("dynamicTheming", true)
     var amoledMode by booleanPreference("amoledMode", false)
     var autoUpdate by booleanPreference("autoUpdate", false)
     var patches by stringPreference("patches", Global.ghPatches)
