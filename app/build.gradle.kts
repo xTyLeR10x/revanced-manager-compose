@@ -26,7 +26,7 @@ val appId = "app.revanced.manager"
 
 android {
     namespace = appId
-    compileSdk = 32
+    compileSdk = 33
 
     testOptions {
         unitTests.isReturnDefaultValues = true
@@ -35,7 +35,7 @@ android {
     defaultConfig {
         applicationId = appId
         minSdk = 26
-        targetSdk = 32 // TODO: update to 33 when sources are available
+        targetSdk = 33
         versionCode = 1
         versionName = "0.1"
         buildConfigField("String", "VERSION_TYPE", "\"Alpha\"")
@@ -96,29 +96,29 @@ android {
 dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
-    implementation("androidx.activity:activity-compose:1.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.activity:activity-compose:1.5.1")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    implementation("androidx.navigation:navigation-compose:2.5.0")
-    implementation("androidx.appcompat:appcompat:1.4.2")
-    implementation("androidx.core:core-splashscreen:1.0.0-rc01")
+    implementation("androidx.navigation:navigation-compose:2.5.1")
+    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:2.5.2")
+    implementation("app.revanced:revanced-patcher:3.3.3")
 
     // Signing & aligning
     implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
-    implementation("com.android.tools.build:apksig:7.2.1")
+    implementation("com.android.tools.build:apksig:7.2.2")
 
     // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.6.12-beta")
+    implementation("io.github.raamcosta.compose-destinations:core:1.7.15-beta")
     implementation("androidx.work:work-runtime-ktx:2.7.1")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.6.12-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.24.8-beta")
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.13-rc")
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.26.0-alpha")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.26.1-alpha")
 
     // libsu
 //    implementation("com.github.topjohnwu.libsu:core:4.0.3")
@@ -141,9 +141,9 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // Material 3 + 2
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha14")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha14")
-    implementation("androidx.compose.material:material:1.1.1")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha16")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha16")
+    implementation("androidx.compose.material:material:1.2.1")
 
     // Tests
     testImplementation(kotlin("test"))

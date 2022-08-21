@@ -1,5 +1,7 @@
 package app.revanced.manager
 
+import app.revanced.manager.R
+
 class Global {
     companion object {
         const val websiteUrl = "https://revanced.app"

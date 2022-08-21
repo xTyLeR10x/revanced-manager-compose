@@ -37,7 +37,7 @@ import app.revanced.manager.ui.screens.destinations.PatchesSelectorScreenDestina
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.patch.Patch
-import app.revanced.patcher.util.patch.implementation.DexPatchBundle
+import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import dalvik.system.DexClassLoader

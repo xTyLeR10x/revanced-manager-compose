@@ -29,7 +29,7 @@ import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.patch.Patch
-import app.revanced.patcher.util.patch.implementation.DexPatchBundle
+import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -164,14 +164,20 @@ class PatcherWorker(context: Context, parameters: WorkerParameters) :
             ZipFile(patchedFile).use { file ->
                 result.dexFiles.forEach {
                     file.addEntryCompressData(
-                        ZipEntry.createWithName(it.name), it.dexFileInputStream.readBytes()
+                        ZipEntry.createWithName(it.name),
+                        it.stream.readBytes()
                     )
                 }
-
                 result.resourceFile?.let {
-                    file.copyEntriesFromFileAligned(ZipFile(it), ZipAligner::getEntryAlignment)
+                    file.copyEntriesFromFileAligned(
+                        ZipFile(it),
+                        ZipAligner::getEntryAlignment
+                    )
                 }
-                file.copyEntriesFromFileAligned(ZipFile(inputFile), ZipAligner::getEntryAlignment)
+                file.copyEntriesFromFileAligned(
+                    ZipFile(inputFile),
+                    ZipAligner::getEntryAlignment
+                )
             }
 
             Log.d(tag, "Signing apk")
