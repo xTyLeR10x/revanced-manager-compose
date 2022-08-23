@@ -1,2 +1,3 @@
-# revanced-manager-compose
-VERY VERY OFFICIAL MANAGER
+# ReVanced Manager
+Compose version of ReVanced Manager.
+
