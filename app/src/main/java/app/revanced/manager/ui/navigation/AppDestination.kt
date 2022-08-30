@@ -26,3 +26,9 @@ enum class DashboardDestination(
     PATCHER(Icons.Default.Build, R.string.patcher),
     SETTINGS(Icons.Default.Settings, R.string.settings),
 }
+
+@Parcelize
+enum class PatcherDestination : Destination {
+    APPSELECTOR,
+    PATCHSELECTOR, // TODO:uhh help 5
+}

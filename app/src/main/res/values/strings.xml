@@ -70,4 +70,6 @@
     <string name="compatible_versions">Compatible app versions</string>
     <string name="patcher_notification_title">Patching</string>
     <string name="patcher_notification_message">ReVanced Manager is patching</string>
+    <string name="theme">Theme</string>
+    <string name="apply">Apply</string>
 </resources>

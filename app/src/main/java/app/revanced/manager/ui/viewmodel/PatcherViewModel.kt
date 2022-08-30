@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -19,25 +19,21 @@ import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.*
 
-data class PatchClass(
-    val patch: Class<out Patch<Data>>,
-    val unsupported: Boolean,
-)
-
-class PatcherViewModel(val app: Application, private val api: API) : AndroidViewModel(app) {
+class PatcherViewModel(private val app: Application, private val api: API) : ViewModel() {
     private val patchBundleCacheDir = app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
 
     val selectedAppPackage = mutableStateOf(Optional.empty<String>())
-    private val selectedPatches = mutableStateListOf<String>()
+    val selectedPatches = mutableStateListOf<String>()
     val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
     lateinit var patchBundleFile: String
 
-    init {
+    init { runBlocking {
         loadPatches()
-    }
+    }  }
 
     fun setSelectedAppPackage(appId: String) {
         selectedAppPackage.value.ifPresent { s ->
@@ -90,7 +86,7 @@ class PatcherViewModel(val app: Application, private val api: API) : AndroidView
 
     private suspend fun downloadDefaultPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = api.downloadPatches(workdir, "$ghPatches")
+            val (_, out) = api.downloadPatches(workdir, ghPatches)
             out
         } catch (e: Exception) {
             throw Exception("Failed to download default patch bundle", e)
@@ -134,3 +130,8 @@ class PatcherViewModel(val app: Application, private val api: API) : AndroidView
             )
     }
 }
+
+data class PatchClass(
+    val patch: Class<out Patch<Data>>,
+    val unsupported: Boolean,
+)

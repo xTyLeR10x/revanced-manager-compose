@@ -7,4 +7,6 @@ import org.koin.dsl.module
 val viewModelModule = module {
     viewModelOf(::SettingsViewModel)
     viewModelOf(::DashboardViewModel)
+    viewModelOf(::PatcherViewModel)
+    viewModelOf(::AppSelectorViewModel)
 }
