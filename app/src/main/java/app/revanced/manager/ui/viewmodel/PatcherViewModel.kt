@@ -40,6 +40,7 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
             if (s != appId) selectedPatches.clear()
         }
         selectedAppPackage.value = Optional.of(appId)
+
     }
 
     fun selectPatch(patchId: String, state: Boolean) {

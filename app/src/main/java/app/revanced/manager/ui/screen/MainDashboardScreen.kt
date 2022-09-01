@@ -11,6 +11,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.navigation.DashboardDestination
+import app.revanced.manager.ui.screen.subscreens.AppSelectorSubscreen
 import com.xinto.taxi.BackstackNavigator
 import com.xinto.taxi.Taxi
 import com.xinto.taxi.rememberNavigator
@@ -64,11 +65,13 @@ fun MainDashboardScreen(navigator: BackstackNavigator<AppDestination>) {
             ) { destination ->
                 when (destination) {
                     DashboardDestination.DASHBOARD -> DashboardScreen()
-                    DashboardDestination.PATCHER -> PatcherScreen()
+                    DashboardDestination.PATCHER -> PatcherScreen(
+                        onClickAppSelector = { navigator.push(AppDestination.AppSelector) },
+                        onClickPatchSelector = { navigator.push(AppDestination.PatchSelector) }
+                    )
                     DashboardDestination.SETTINGS -> SettingsScreen()
                 }
             }
         }
-
     }
 }

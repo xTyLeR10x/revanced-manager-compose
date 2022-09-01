@@ -15,6 +15,12 @@ import kotlinx.parcelize.RawValue
 sealed interface AppDestination : Destination {
     @Parcelize
     object Dashboard : AppDestination
+
+    @Parcelize
+    object AppSelector : AppDestination
+
+    @Parcelize
+    object PatchSelector : AppDestination
 }
 
 @Parcelize
@@ -25,10 +31,4 @@ enum class DashboardDestination(
     DASHBOARD(Icons.Default.Dashboard, R.string.dashboard),
     PATCHER(Icons.Default.Build, R.string.patcher),
     SETTINGS(Icons.Default.Settings, R.string.settings),
-}
-
-@Parcelize
-enum class PatcherDestination : Destination {
-    APPSELECTOR,
-    PATCHSELECTOR, // TODO:uhh help 5
 }
