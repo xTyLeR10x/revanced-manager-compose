@@ -87,7 +87,7 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
 
     private suspend fun downloadDefaultPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = api.downloadPatches(workdir, ghPatches)
+            val (_, out) = api.downloadFile(workdir, ghPatches, ".jar")
             out
         } catch (e: Exception) {
             throw Exception("Failed to download default patch bundle", e)

@@ -28,20 +28,23 @@ val client = HttpClient(Android) {
 
 class API(private val repository: GitHubRepository) {
 
-    suspend fun downloadPatches(workdir: File, asset: String) = downloadAsset(workdir, findAsset(asset))
-    suspend fun downloadIntegrations(workdir: File, asset: String) = downloadAsset(workdir, findAsset(asset))
+    suspend fun downloadFile(workdir: File, asset: String, file: String) =
+        downloadAsset(workdir, findAsset(asset, file))
 
-    private suspend fun findAsset(repo: String): PatchesAsset {
+    private suspend fun findAsset(repo: String, file: String): PatchesAsset {
         val release = repository.getLatestRelease(repo)
-        val asset = release.assets.findAsset() ?: throw MissingAssetException()
+        val asset = release.assets.findAsset(file) ?: throw MissingAssetException()
         return PatchesAsset(release, asset)
     }
 
-    private fun List<APIRelease.Asset>.findAsset() = find { asset ->
-        (asset.name.contains(".apk") || asset.name.contains(".dex")) && !asset.name.contains("-sources") && !asset.name.contains("-javadoc")
+    private fun List<APIRelease.Asset>.findAsset(file: String) = find { asset ->
+        (asset.name.contains(file) && !asset.name.contains("-sources") && !asset.name.contains("-javadoc"))
     }
 
-    private suspend fun downloadAsset(workdir: File, patchesAsset: PatchesAsset): Pair<PatchesAsset, File> {
+    private suspend fun downloadAsset(
+        workdir: File,
+        patchesAsset: PatchesAsset
+    ): Pair<PatchesAsset, File> {
         val (release, asset) = patchesAsset
         val out = workdir.resolve("${release.tagName}-${asset.name}")
         if (out.exists()) {

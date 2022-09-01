@@ -14,7 +14,7 @@ import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.screen.MainDashboardScreen
 import app.revanced.manager.ui.screen.subscreens.AppSelectorSubscreen
-import app.revanced.manager.ui.screen.subscreens.PatchesSelector
+import app.revanced.manager.ui.screen.subscreens.PatchesSelectorSubscreen
 import app.revanced.manager.ui.theme.ReVancedManagerTheme
 import com.xinto.taxi.Taxi
 import com.xinto.taxi.rememberBackstackNavigator
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         is AppDestination.AppSelector -> AppSelectorSubscreen(
                             navigator = navigator
                         )
-                        is AppDestination.PatchSelector -> PatchesSelector(navigator = navigator)
+                        is AppDestination.PatchSelector -> PatchesSelectorSubscreen(navigator = navigator)
                     }
                 }
             }

@@ -188,9 +188,10 @@ class PatcherWorker(context: Context, parameters: WorkerParameters, private val 
 
     private suspend fun downloadIntegrations(workdir: File): File {
         return try {
-            val (_, out) = api.downloadIntegrations(
+            val (_, out) = api.downloadFile(
                 workdir,
-                ghIntegrations
+                ghIntegrations,
+                ".apk"
             )
             out
         } catch (e: Exception) {
