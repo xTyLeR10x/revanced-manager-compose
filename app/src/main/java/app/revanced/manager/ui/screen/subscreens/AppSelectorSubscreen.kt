@@ -10,10 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
@@ -46,38 +43,30 @@ fun AppSelectorSubscreen(
             )
         }
     ) { paddingValues ->
-        val installedApps by vm.installedApps
+        LazyColumn(modifier = Modifier.padding(paddingValues)) {
+            items(count = vm.filteredApps.size) {
+                val app = vm.filteredApps[it]
+                val label = vm.applicationLabel(app)
+                val packageName = app.packageName
 
-        when (val installedApps = installedApps) {
-            is Resource.Success -> {
-                val apps = installedApps.data
-                LazyColumn(modifier = Modifier.padding(paddingValues)) {
-                    items(count = apps.size) {
-                        val app = apps[it]
-                        val label = vm.applicationLabel(app)
-                        val packageName = app.packageName
-
-                        val same = packageName == label
-                        ListItem(modifier = Modifier.clickable {
-                            pvm.setSelectedAppPackage(app.packageName)
-                            navigator.pop()
-                        }, icon = {
-                            AppIcon(vm.loadIcon(app), packageName)
-                        }, text = {
-                            if (same) {
-                                Text(packageName)
-                            } else {
-                                Text(label)
-                            }
-                        }, secondaryText = {
-                            if (!same) {
-                                Text(packageName)
-                            }
-                        })
+                val same = packageName == label
+                ListItem(modifier = Modifier.clickable {
+                    pvm.setSelectedAppPackage(app.packageName)
+                    navigator.pop()
+                }, icon = {
+                    AppIcon(vm.loadIcon(app), packageName)
+                }, text = {
+                    if (same) {
+                        Text(packageName)
+                    } else {
+                        Text(label)
                     }
-                }
+                }, secondaryText = {
+                    if (!same) {
+                        Text(packageName)
+                    }
+                })
             }
-            else -> {}
         }
     }
 }
