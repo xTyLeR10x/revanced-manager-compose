@@ -1,32 +1,32 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.ui.component.FloatingActionButton
+import app.revanced.manager.Variables.selectedAppPackage
+import app.revanced.manager.Variables.selectedPatches
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatcherScreen(
     onClickAppSelector: () -> Unit,
     onClickPatchSelector: () -> Unit,
     viewModel: PatcherViewModel = getViewModel()
 ) {
-    val navigator = "" // TODO:uhh help 1
-    val selectedAmount = viewModel.selectedPatches
-    val selectedAppPackage by viewModel.selectedAppPackage
+    val selectedAmount = selectedPatches
+    val selectedAppPackage by selectedAppPackage
     val hasAppSelected = selectedAppPackage.isPresent
     Column(
         modifier = Modifier

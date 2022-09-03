@@ -3,8 +3,6 @@ package app.revanced.manager.ui.viewmodel
 import android.app.Application
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequest
@@ -12,6 +10,9 @@ import androidx.work.WorkManager
 import app.revanced.manager.api.API
 import app.revanced.manager.patcher.worker.PatcherWorker
 import app.revanced.manager.ui.Resource
+import app.revanced.manager.Variables.patches
+import app.revanced.manager.Variables.selectedAppPackage
+import app.revanced.manager.Variables.selectedPatches
 import app.revanced.manager.util.ghPatches
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
@@ -21,27 +22,14 @@ import dalvik.system.DexClassLoader
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
-import java.util.*
 
 class PatcherViewModel(private val app: Application, private val api: API) : ViewModel() {
     private val patchBundleCacheDir = app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
-
-    val selectedAppPackage = mutableStateOf(Optional.empty<String>())
-    val selectedPatches = mutableStateListOf<String>()
-    val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
     lateinit var patchBundleFile: String
 
     init { runBlocking {
         loadPatches()
     }  }
-
-    fun setSelectedAppPackage(appId: String) {
-        selectedAppPackage.value.ifPresent { s ->
-            if (s != appId) selectedPatches.clear()
-        }
-        selectedAppPackage.value = Optional.of(appId)
-
-    }
 
     fun selectPatch(patchId: String, state: Boolean) {
         if (state) selectedPatches.add(patchId)
@@ -94,10 +82,10 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
         }
     }
 
-    private fun loadPatches() = viewModelScope.launch {
+    fun loadPatches() = viewModelScope.launch {
         try {
             val file = downloadDefaultPatchBundle(patchBundleCacheDir)
-            patchBundleFile=file.absolutePath
+            patchBundleFile = file.absolutePath
             loadPatches0(file.absolutePath)
         } catch (e: Exception) {
             Log.e("ReVancedManager", "An error occurred while loading patches", e)
@@ -114,6 +102,7 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
             )
         ).loadPatches()
         patches.value = Resource.Success(patchClasses)
+        Log.d("ReVanced Manager", "Finished loading patches")
     }
 
     fun startPatcher() {

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.navigation.AppDestination
+import app.revanced.manager.Variables
 import app.revanced.manager.ui.viewmodel.PatchSelectorViewModel
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.patcher.extensions.PatchExtensions.patchName
@@ -31,7 +32,7 @@ fun PatchesSelectorSubscreen(
     pvm: PatcherViewModel = getViewModel()
 ) {
     val patches = rememberSaveable { pvm.getFilteredPatches() }
-    val patchesState by pvm.patches
+    val patchesState by Variables.patches
     var query by mutableStateOf("")
 
     when (patchesState) {

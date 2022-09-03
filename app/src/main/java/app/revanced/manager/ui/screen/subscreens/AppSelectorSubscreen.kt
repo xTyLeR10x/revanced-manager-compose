@@ -14,11 +14,9 @@ import androidx.compose.ui.Modifier
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
-import app.revanced.manager.ui.viewmodel.PatcherViewModel
+import app.revanced.manager.Variables.filteredApps
 import com.xinto.taxi.BackstackNavigator
 import org.koin.androidx.compose.getViewModel
-
-private const val tag = "AppSelector"
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @SuppressLint("QueryPermissionsNeeded")
@@ -26,7 +24,6 @@ private const val tag = "AppSelector"
 fun AppSelectorSubscreen(
     navigator: BackstackNavigator<AppDestination>,
     vm: AppSelectorViewModel = getViewModel(),
-    pvm: PatcherViewModel = getViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -44,14 +41,14 @@ fun AppSelectorSubscreen(
         }
     ) { paddingValues ->
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
-            items(count = vm.filteredApps.size) {
-                val app = vm.filteredApps[it]
+            items(count = filteredApps.size) {
+                val app = filteredApps[it]
                 val label = vm.applicationLabel(app)
                 val packageName = app.packageName
 
                 val same = packageName == label
                 ListItem(modifier = Modifier.clickable {
-                    pvm.setSelectedAppPackage(app.packageName)
+                    vm.setSelectedAppPackage(app.packageName)
                     navigator.pop()
                 }, icon = {
                     AppIcon(vm.loadIcon(app), packageName)

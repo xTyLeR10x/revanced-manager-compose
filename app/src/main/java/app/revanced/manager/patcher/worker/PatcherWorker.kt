@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -21,6 +20,7 @@ import app.revanced.manager.patcher.aligning.zip.ZipFile
 import app.revanced.manager.patcher.aligning.zip.structures.ZipEntry
 import app.revanced.manager.patcher.signing.Signer
 import app.revanced.manager.ui.Resource
+import app.revanced.manager.Variables.patches
 import app.revanced.manager.util.ghIntegrations
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
@@ -33,7 +33,6 @@ import java.io.File
 
 class PatcherWorker(context: Context, parameters: WorkerParameters, private val api: API) :
     CoroutineWorker(context, parameters) {
-    val patches = mutableStateOf<Resource<List<Class<out Patch<Data>>>>>(Resource.Loading)
     val tag = "ReVanced Manager"
 
     override suspend fun doWork(): Result {
