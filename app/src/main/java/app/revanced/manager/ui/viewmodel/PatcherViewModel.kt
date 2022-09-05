@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import app.revanced.manager.api.API
-import app.revanced.manager.patcher.worker.PatcherWorker
-import app.revanced.manager.ui.Resource
 import app.revanced.manager.Variables.patches
 import app.revanced.manager.Variables.selectedAppPackage
 import app.revanced.manager.Variables.selectedPatches
+import app.revanced.manager.api.API
+import app.revanced.manager.patcher.worker.PatcherWorker
+import app.revanced.manager.ui.Resource
 import app.revanced.manager.util.ghPatches
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
@@ -24,12 +24,15 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 
 class PatcherViewModel(private val app: Application, private val api: API) : ViewModel() {
-    private val patchBundleCacheDir = app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
-    lateinit var patchBundleFile: String
+    private val patchBundleCacheDir =
+        app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
+    private lateinit var patchBundleFile: String
 
-    init { runBlocking {
-        loadPatches()
-    }  }
+    init {
+        runBlocking {
+            loadPatches()
+        }
+    }
 
     fun selectPatch(patchId: String, state: Boolean) {
         if (state) selectedPatches.add(patchId)
@@ -43,7 +46,6 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
     fun anyPatchSelected(): Boolean {
         return !selectedPatches.isEmpty()
     }
-
 
 
     private fun getSelectedPackageInfo() =
@@ -65,7 +67,7 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
                     if (pkg.name == selected.packageName) {
                         if (!unsupported)
                             unsupported =
-                                pkg.versions.isNotEmpty() && !pkg.versions.any { it == selected.versionName }
+                                pkg.versions.isEmpty() && !pkg.versions.any { it == selected.versionName }
                         add(PatchClass(patch, unsupported))
                     }
                 }
@@ -82,7 +84,7 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
         }
     }
 
-    fun loadPatches() = viewModelScope.launch {
+    private fun loadPatches() = viewModelScope.launch {
         try {
             val file = downloadDefaultPatchBundle(patchBundleCacheDir)
             patchBundleFile = file.absolutePath
@@ -112,8 +114,8 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
                 OneTimeWorkRequest.Builder(PatcherWorker::class.java)
                     .setInputData(
                         androidx.work.Data.Builder()
-                            .putStringArray("selectedPatches",selectedPatches.toTypedArray())
-                            .putString("patchBundleFile",patchBundleFile)
+                            .putStringArray("selectedPatches", selectedPatches.toTypedArray())
+                            .putString("patchBundleFile", patchBundleFile)
                             .build()
                     )
                     .build()

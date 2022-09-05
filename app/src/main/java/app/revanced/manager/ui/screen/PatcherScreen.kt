@@ -25,7 +25,7 @@ fun PatcherScreen(
     onClickPatchSelector: () -> Unit,
     viewModel: PatcherViewModel = getViewModel()
 ) {
-    val selectedAmount = selectedPatches
+    val selectedAmount = selectedPatches.size
     val selectedAppPackage by selectedAppPackage
     val hasAppSelected = selectedAppPackage.isPresent
     Column(

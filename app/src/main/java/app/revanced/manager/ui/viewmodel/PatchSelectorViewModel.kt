@@ -15,13 +15,14 @@ import app.revanced.manager.R
 import app.revanced.manager.ui.component.PatchCompatibilityDialog
 import app.revanced.manager.ui.theme.Typography
 import app.revanced.patcher.extensions.PatchExtensions.description
+import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchSelectorViewModel(patchClass: PatchClass, isSelected: Boolean, onSelected: () -> Unit) {
     val patch = patchClass.patch
-    val name = patch.name
+    val name = patch.patchName
 
     var showDialog by remember { mutableStateOf(false) }
 

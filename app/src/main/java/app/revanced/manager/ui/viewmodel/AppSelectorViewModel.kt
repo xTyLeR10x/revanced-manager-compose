@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import app.revanced.manager.Variables
-import app.revanced.manager.ui.Resource
 import app.revanced.manager.Variables.filteredApps
 import app.revanced.manager.Variables.installedApps
 import app.revanced.manager.Variables.patches
 import app.revanced.manager.Variables.selectedAppPackage
+import app.revanced.manager.ui.Resource
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import java.util.*
 

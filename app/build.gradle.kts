@@ -103,7 +103,7 @@ dependencies {
     ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:3.3.3")
+    implementation("app.revanced:revanced-patcher:3.4.0")
 
     // Coil for network image
     implementation("io.coil-kt:coil-compose:2.1.0")
