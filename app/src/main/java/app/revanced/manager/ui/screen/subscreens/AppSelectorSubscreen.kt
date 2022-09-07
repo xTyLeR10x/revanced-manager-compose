@@ -4,21 +4,21 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import app.revanced.manager.R
+import app.revanced.manager.Variables.filteredApps
 import app.revanced.manager.ui.component.AppIcon
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.viewmodel.AppSelectorViewModel
-import app.revanced.manager.Variables.filteredApps
 import com.xinto.taxi.BackstackNavigator
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("QueryPermissionsNeeded")
 @Composable
 fun AppSelectorSubscreen(
@@ -28,7 +28,7 @@ fun AppSelectorSubscreen(
     Scaffold(
         topBar = {
             MediumTopAppBar(
-                title = { Text("hhhhhh") },
+                title = { Text(stringResource(R.string.app_selector_title)) },
                 navigationIcon = {
                     IconButton(onClick = navigator::pop) {
                         Icon(
@@ -50,15 +50,15 @@ fun AppSelectorSubscreen(
                 ListItem(modifier = Modifier.clickable {
                     vm.setSelectedAppPackage(app.packageName)
                     navigator.pop()
-                }, icon = {
+                }, leadingContent = {
                     AppIcon(vm.loadIcon(app), packageName)
-                }, text = {
+                }, headlineText = {
                     if (same) {
                         Text(packageName)
                     } else {
                         Text(label)
                     }
-                }, secondaryText = {
+                }, supportingText = {
                     if (!same) {
                         Text(packageName)
                     }

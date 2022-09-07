@@ -61,6 +61,7 @@ dependencies {
 
     // AndroidX activity
     implementation("androidx.activity:activity-compose:1.6.0-rc01")
+    implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     // Koin
     val koinVersion = "3.2.0"
@@ -73,7 +74,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:${composeVersion}")
     implementation("androidx.compose.material3:material3:1.0.0-beta01")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
-    implementation("androidx.compose.material:material:1.2.1")
 
     // Accompanist
     val accompanistVersion = "0.26.0-alpha"
@@ -96,11 +96,6 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-
-    // Compose Destinations
-    implementation("io.github.raamcosta.compose-destinations:core:1.7.15-beta")
-    implementation("androidx.work:work-runtime-ktx:2.7.1")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.7.15-beta")
 
     // ReVanced
     implementation("app.revanced:revanced-patcher:3.4.0")

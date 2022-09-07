@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.with
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.screen.MainDashboardScreen
@@ -25,6 +26,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             ReVancedManagerTheme(dynamicColor = prefs.dynamicColor) {

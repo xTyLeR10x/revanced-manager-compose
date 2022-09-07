@@ -5,6 +5,7 @@ import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
 import androidx.compose.material.ripple.RippleTheme
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
@@ -35,7 +36,7 @@ fun FloatingActionButton(
                 }
                 if (enabled) onClick()
             },
-            containerColor = if (enabled) Color(0xFF1B222B) else Color(0xFF1B222B),
+            containerColor = if (enabled) MaterialTheme.colorScheme.primaryContainer else Color.Gray,
         )
     }
 }
