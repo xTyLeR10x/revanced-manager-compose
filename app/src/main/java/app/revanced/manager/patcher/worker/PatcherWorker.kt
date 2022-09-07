@@ -13,15 +13,15 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import app.revanced.manager.R
+import app.revanced.manager.Variables.patches
 import app.revanced.manager.api.API
 import app.revanced.manager.patcher.aapt.Aapt
 import app.revanced.manager.patcher.aligning.ZipAligner
 import app.revanced.manager.patcher.aligning.zip.ZipFile
 import app.revanced.manager.patcher.aligning.zip.structures.ZipEntry
 import app.revanced.manager.patcher.signing.Signer
+import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.Resource
-import app.revanced.manager.Variables.patches
-import app.revanced.manager.util.ghIntegrations
 import app.revanced.patcher.Patcher
 import app.revanced.patcher.PatcherOptions
 import app.revanced.patcher.data.Data
@@ -31,7 +31,7 @@ import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
 import java.io.File
 
-class PatcherWorker(context: Context, parameters: WorkerParameters, private val api: API) :
+class PatcherWorker(context: Context, parameters: WorkerParameters, private val api: API, private val prefs: PreferencesManager) :
     CoroutineWorker(context, parameters) {
     val tag = "ReVanced Manager"
 
@@ -189,7 +189,7 @@ class PatcherWorker(context: Context, parameters: WorkerParameters, private val 
         return try {
             val (_, out) = api.downloadFile(
                 workdir,
-                ghIntegrations,
+                prefs.srcIntegrations.toString(),
                 ".apk"
             )
             out

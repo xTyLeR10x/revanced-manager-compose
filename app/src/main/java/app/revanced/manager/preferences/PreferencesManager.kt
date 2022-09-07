@@ -13,7 +13,6 @@ class PreferencesManager(
     sharedPreferences: SharedPreferences
 ) : BasePreferenceManager(sharedPreferences) {
     var dynamicColor by booleanPreference("dynamic_color", true)
-
     var srcPatches by stringPreference("src_patches", ghPatches)
     var srcIntegrations by stringPreference("src_integrations", ghIntegrations)
 }

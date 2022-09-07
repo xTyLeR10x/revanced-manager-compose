@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import app.revanced.manager.Variables
 import app.revanced.manager.Variables.patches
 import app.revanced.manager.Variables.selectedAppPackage
 import app.revanced.manager.Variables.selectedPatches
 import app.revanced.manager.api.API
 import app.revanced.manager.patcher.worker.PatcherWorker
+import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.Resource
-import app.revanced.manager.util.ghPatches
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
 import app.revanced.patcher.patch.Patch
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
-class PatcherViewModel(private val app: Application, private val api: API) : ViewModel() {
+class PatcherViewModel(private val app: Application, private val api: API, private val prefs: PreferencesManager) : ViewModel() {
     private val patchBundleCacheDir =
         app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
     private lateinit var patchBundleFile: String
@@ -75,18 +76,18 @@ class PatcherViewModel(private val app: Application, private val api: API) : Vie
         }
     }
 
-    private suspend fun downloadDefaultPatchBundle(workdir: File): File {
+    private suspend fun downloadPatchBundle(workdir: File): File {
         return try {
-            val (_, out) = api.downloadFile(workdir, ghPatches, ".jar")
+            val (_, out) = api.downloadFile(workdir, prefs.srcPatches.toString(), ".jar")
             out
         } catch (e: Exception) {
-            throw Exception("Failed to download default patch bundle", e)
+            throw Exception("Failed to download patch bundle", e)
         }
     }
 
     private fun loadPatches() = viewModelScope.launch {
         try {
-            val file = downloadDefaultPatchBundle(patchBundleCacheDir)
+            val file = downloadPatchBundle(patchBundleCacheDir)
             patchBundleFile = file.absolutePath
             loadPatches0(file.absolutePath)
         } catch (e: Exception) {
