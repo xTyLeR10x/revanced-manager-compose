@@ -40,6 +40,13 @@ class PatcherViewModel(private val app: Application, private val api: API, priva
         else selectedPatches.remove(patchId)
     }
 
+    fun selectAllPatches(selectAll: Boolean/*, patches:  no clue  */) {
+        selectedPatches.clear()
+        if (selectAll) {
+            selectedPatches.addAll(/* cana */)
+        }
+    }
+
     fun isPatchSelected(patchId: String): Boolean {
         return selectedPatches.contains(patchId)
     }

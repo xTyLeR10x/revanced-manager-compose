@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.PatchCompatibilityDialog
 import app.revanced.manager.ui.navigation.AppDestination
+import app.revanced.manager.ui.navigation.DashboardDestination
 import app.revanced.manager.ui.theme.Typography
 import app.revanced.manager.ui.viewmodel.PatchClass
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
@@ -27,6 +29,7 @@ import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
 import com.xinto.taxi.BackstackNavigator
+import kotlinx.coroutines.selects.select
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,8 +41,28 @@ fun PatchesSelectorSubscreen(
     val patches = rememberSaveable { pvm.getFilteredPatches() }
     val patchesState by Variables.patches
     var query by mutableStateOf("")
+    var selectAll by mutableStateOf(false)
 
-    Scaffold(floatingActionButton = {
+    Scaffold(
+        topBar = {
+            MediumTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.card_patches_header),
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                },
+                actions = {
+                    IconButton(onClick = {
+                        selectAll = !selectAll
+                        pvm.selectAllPatches(selectAll)
+                    } ) {
+                        if(!selectAll) Icon(Icons.Default.SelectAll, contentDescription = null) else Icon(Icons.Default.Deselect, contentDescription = null)
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
         if (pvm.anyPatchSelected()) {
             ExtendedFloatingActionButton(
                 icon = { Icon(Icons.Default.Check, "Done") },
