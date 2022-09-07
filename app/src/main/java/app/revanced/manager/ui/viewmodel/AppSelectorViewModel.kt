@@ -1,15 +1,12 @@
 package app.revanced.manager.ui.viewmodel
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import app.revanced.manager.Variables
 import app.revanced.manager.Variables.filteredApps
-import app.revanced.manager.Variables.installedApps
 import app.revanced.manager.Variables.patches
 import app.revanced.manager.Variables.selectedAppPackage
 import app.revanced.manager.ui.Resource
@@ -21,19 +18,7 @@ class AppSelectorViewModel(
 ) : ViewModel() {
 
     init {
-        fetchInstalledApps()
         filterApps()
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    private fun fetchInstalledApps() {
-        Log.d("ReVanced Manager", "Fetching applications")
-        try {
-            installedApps.value =
-                Resource.success(app.packageManager.getInstalledApplications(PackageManager.GET_META_DATA))
-        } catch (e: Exception) {
-            Log.e("ReVanced Manager", "An error occurred while fetching apps", e)
-        }
     }
 
     private fun filterApps(): List<ApplicationInfo> {

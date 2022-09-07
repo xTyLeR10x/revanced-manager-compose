@@ -98,7 +98,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:3.4.1")
+    implementation("app.revanced:revanced-patcher:4.1.0")
 
     // Coil for network image
     implementation("io.coil-kt:coil-compose:2.1.0")

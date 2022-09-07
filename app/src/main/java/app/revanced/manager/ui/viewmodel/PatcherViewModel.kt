@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import app.revanced.manager.Variables
 import app.revanced.manager.Variables.patches
 import app.revanced.manager.Variables.selectedAppPackage
 import app.revanced.manager.Variables.selectedPatches
@@ -17,6 +16,8 @@ import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.ui.Resource
 import app.revanced.patcher.data.Data
 import app.revanced.patcher.extensions.PatchExtensions.compatiblePackages
+import app.revanced.patcher.extensions.PatchExtensions.options
+import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.patch.Patch
 import app.revanced.patcher.util.patch.impl.DexPatchBundle
 import dalvik.system.DexClassLoader
@@ -29,6 +30,7 @@ class PatcherViewModel(private val app: Application, private val api: API, priva
         app.filesDir.resolve("patch-bundle-cache").also { it.mkdirs() }
     private lateinit var patchBundleFile: String
 
+
     init {
         runBlocking {
             loadPatches()
@@ -40,10 +42,11 @@ class PatcherViewModel(private val app: Application, private val api: API, priva
         else selectedPatches.remove(patchId)
     }
 
-    fun selectAllPatches(selectAll: Boolean/*, patches:  no clue  */) {
-        selectedPatches.clear()
-        if (selectAll) {
-            selectedPatches.addAll(/* cana */)
+    fun selectAllPatches(patchList: List<PatchClass>, selectAll: Boolean) {
+        patchList.forEach { patch ->
+            val patchId = patch.patch.patchName
+            if (selectAll) selectedPatches.add(patchId)
+            else selectedPatches.remove(patchId)
         }
     }
 
@@ -70,13 +73,18 @@ class PatcherViewModel(private val app: Application, private val api: API, priva
             val (patches) = patches.value as? Resource.Success ?: return@buildList
             patches.forEach patch@{ patch ->
                 var unsupported = false
+                var hasPatchOptions = false
+                if (patch.options != null) {
+                    hasPatchOptions = true
+                    Log.d("ReVanced Manager", "${patch.patchName} has patch options.")
+                }
                 patch.compatiblePackages?.forEach { pkg ->
                     // if we detect unsupported once, don't overwrite it
                     if (pkg.name == selected.packageName) {
                         if (!unsupported)
                             unsupported =
-                                pkg.versions.isEmpty() && !pkg.versions.any { it == selected.versionName }
-                        add(PatchClass(patch, unsupported))
+                                pkg.versions.isNotEmpty() && !pkg.versions.any { it == selected.versionName }
+                        add(PatchClass(patch, unsupported, hasPatchOptions))
                     }
                 }
             }
@@ -134,4 +142,5 @@ class PatcherViewModel(private val app: Application, private val api: API, priva
 data class PatchClass(
     val patch: Class<out Patch<Data>>,
     val unsupported: Boolean,
+    val hasPatchOptions: Boolean,
 )

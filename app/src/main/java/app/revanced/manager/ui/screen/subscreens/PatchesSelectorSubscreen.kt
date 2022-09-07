@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -20,28 +19,22 @@ import app.revanced.manager.Variables
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.PatchCompatibilityDialog
-import app.revanced.manager.ui.navigation.AppDestination
-import app.revanced.manager.ui.navigation.DashboardDestination
 import app.revanced.manager.ui.theme.Typography
 import app.revanced.manager.ui.viewmodel.PatchClass
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
-import com.xinto.taxi.BackstackNavigator
-import kotlinx.coroutines.selects.select
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorSubscreen(
-    navigator: BackstackNavigator<AppDestination>,
     pvm: PatcherViewModel = getViewModel()
 ) {
     val patches = rememberSaveable { pvm.getFilteredPatches() }
     val patchesState by Variables.patches
     var query by mutableStateOf("")
-    var selectAll by mutableStateOf(false)
 
     Scaffold(
         topBar = {
@@ -54,23 +47,17 @@ fun PatchesSelectorSubscreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                        selectAll = !selectAll
-                        pvm.selectAllPatches(selectAll)
-                    } ) {
-                        if(!selectAll) Icon(Icons.Default.SelectAll, contentDescription = null) else Icon(Icons.Default.Deselect, contentDescription = null)
+                        pvm.selectAllPatches(patches, !pvm.anyPatchSelected())
+                    }) {
+                        if (!pvm.anyPatchSelected()) Icon(
+                            Icons.Default.SelectAll,
+                            contentDescription = null
+                        ) else Icon(Icons.Default.Deselect, contentDescription = null)
                     }
                 }
             )
         },
-        floatingActionButton = {
-        if (pvm.anyPatchSelected()) {
-            ExtendedFloatingActionButton(
-                icon = { Icon(Icons.Default.Check, "Done") },
-                text = { Text("Done") },
-                onClick = { navigator.pop() },
-            )
-        }
-    }) { paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -181,8 +168,10 @@ fun PatchCard(patchClass: PatchClass, isSelected: Boolean, onSelected: () -> Uni
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(0.dp)
                     ) {
-                        IconButton(onClick = {  }) {
-                            Icon(Icons.Default.Settings, contentDescription = "Patch Options")
+                        if (patchClass.hasPatchOptions) {
+                            IconButton(onClick = { }) {
+                                Icon(Icons.Default.Settings, contentDescription = "Patch Options")
+                            }
                         }
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
