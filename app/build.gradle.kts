@@ -56,11 +56,11 @@ android {
 
 dependencies {
     // AndroidX core
-    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
 
     // AndroidX activity
-    implementation("androidx.activity:activity-compose:1.6.0-rc01")
+    implementation("androidx.activity:activity-compose:1.6.0-rc02")
     implementation("androidx.work:work-runtime-ktx:2.7.1")
 
     // Koin
@@ -72,7 +72,7 @@ dependencies {
     val composeVersion = "1.3.0-alpha03"
     implementation("androidx.compose.ui:ui:${composeVersion}")
     debugImplementation("androidx.compose.ui:ui-tooling:${composeVersion}")
-    implementation("androidx.compose.material3:material3:1.0.0-beta01")
+    implementation("androidx.compose.material3:material3:1.0.0-beta02")
     implementation("androidx.compose.material:material-icons-extended:${composeVersion}")
 
     // Accompanist
@@ -98,7 +98,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     // ReVanced
-    implementation("app.revanced:revanced-patcher:3.4.0")
+    implementation("app.revanced:revanced-patcher:3.4.1")
 
     // Coil for network image
     implementation("io.coil-kt:coil-compose:2.1.0")
