@@ -20,7 +20,7 @@ repositories {
 }
 
 android {
-    namespace = "app.revanced.manager_compose"
+    namespace = "app.revanced.manager"
     compileSdk = 33
 
     defaultConfig {

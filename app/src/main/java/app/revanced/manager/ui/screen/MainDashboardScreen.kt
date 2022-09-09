@@ -35,7 +35,7 @@ fun MainDashboardScreen(navigator: BackstackNavigator<AppDestination>) {
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            SmallTopAppBar(
+            LargeTopAppBar(
                 title = {
                     Text(
                         text = stringResource(mainRootNavigator.currentDestination.label),

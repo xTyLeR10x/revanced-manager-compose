@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         is AppDestination.AppSelector -> AppSelectorSubscreen(
                             navigator = navigator
                         )
-                        is AppDestination.PatchSelector -> PatchesSelectorSubscreen()
+                        is AppDestination.PatchSelector -> PatchesSelectorSubscreen(navigator = navigator)
                     }
                 }
             }

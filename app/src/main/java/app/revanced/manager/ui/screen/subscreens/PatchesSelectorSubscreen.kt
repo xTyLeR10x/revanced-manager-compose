@@ -20,17 +20,20 @@ import app.revanced.manager.Variables.patchesState
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.PatchCompatibilityDialog
+import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.theme.Typography
 import app.revanced.manager.ui.viewmodel.PatchClass
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
+import com.xinto.taxi.BackstackNavigator
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorSubscreen(
+    navigator: BackstackNavigator<AppDestination>,
     pvm: PatcherViewModel = getViewModel(),
 ) {
     val patches = rememberSaveable { pvm.getFilteredPatchesAndCheckOptions() }
@@ -45,6 +48,14 @@ fun PatchesSelectorSubscreen(
                         text = stringResource(R.string.card_patches_header),
                         style = MaterialTheme.typography.headlineLarge
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = navigator::pop) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
                 },
                 actions = {
                     IconButton(onClick = {
