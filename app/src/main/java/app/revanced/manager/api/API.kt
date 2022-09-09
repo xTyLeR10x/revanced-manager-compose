@@ -1,7 +1,7 @@
 package app.revanced.manager.api
 
 import android.util.Log
-import app.revanced.manager.github.APIRelease
+import app.revanced.manager.dto.github.APIRelease
 import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.repository.GitHubRepository
 import io.ktor.client.*

@@ -1,8 +1,8 @@
 package app.revanced.manager.repository
 
-import app.revanced.manager.github.APICommit
-import app.revanced.manager.github.APIContributor
-import app.revanced.manager.github.APIRelease
+import app.revanced.manager.dto.github.APICommit
+import app.revanced.manager.dto.github.APIContributor
+import app.revanced.manager.dto.github.APIRelease
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
