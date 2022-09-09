@@ -1,6 +1,9 @@
 package app.revanced.manager.ui.screen
 
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,7 +34,7 @@ fun MainDashboardScreen(navigator: BackstackNavigator<AppDestination>) {
             .fillMaxSize()
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
+            SmallTopAppBar(
                 title = {
                     Text(
                         text = stringResource(mainRootNavigator.currentDestination.label),

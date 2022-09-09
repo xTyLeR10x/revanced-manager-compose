@@ -1,14 +1,11 @@
 package app.revanced.manager.ui.screen
 
-import android.os.Build
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.Style
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
 import app.revanced.manager.preferences.PreferencesManager
-import app.revanced.manager.ui.component.GroupHeader
 import app.revanced.manager.ui.component.SocialItem
 import app.revanced.manager.ui.theme.Theme
 import app.revanced.manager.ui.viewmodel.SettingsViewModel
@@ -36,7 +32,6 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
             .verticalScroll(state = rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        GroupHeader(title = "Appearance")
         if (viewModel.showThemePicker) {
             ThemePicker(
                 onDismissRequest = viewModel::dismissThemePicker,
@@ -45,25 +40,19 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
         }
         ListItem(
             modifier = Modifier.clickable { viewModel.showThemePicker() },
-            leadingContent = { Icon(Icons.Default.Style, contentDescription = null) },
-            headlineText = { Text(stringResource(R.string.theme)) },
-            trailingContent = { FilledTonalButton(onClick = { viewModel.showThemePicker() }) {
-                Text(text = prefs.theme.displayName)
-            } }
+            headlineText = { Text(stringResource(R.string.theme)) }
         )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            ListItem(
-                modifier = Modifier.clickable { prefs.dynamicColor = !prefs.dynamicColor },
-                headlineText = { Text(stringResource(R.string.dynamic_color)) },
-                leadingContent = { Icon(Icons.Default.Palette, contentDescription = null) },
-                trailingContent = {
-                    Switch(
-                        checked = prefs.dynamicColor,
-                        onCheckedChange = { prefs.dynamicColor = it }
-                    )
-                }
-            )
-        }
+        ListItem(
+            modifier = Modifier.clickable { prefs.dynamicColor = !prefs.dynamicColor },
+            headlineText = { Text(stringResource(R.string.dynamic_color)) },
+            trailingContent = {
+                Switch(
+                    checked = prefs.dynamicColor,
+                    onCheckedChange = { prefs.dynamicColor = it }
+                )
+            }
+        )
+
         Divider()
         SocialItem(R.string.github, Icons.Default.Code, viewModel::openGitHub)
     }

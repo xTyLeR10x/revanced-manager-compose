@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -15,29 +16,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.revanced.manager.R
-import app.revanced.manager.Variables
+import app.revanced.manager.Variables.patchesState
 import app.revanced.manager.ui.Resource
 import app.revanced.manager.ui.component.LoadingIndicator
 import app.revanced.manager.ui.component.PatchCompatibilityDialog
-import app.revanced.manager.ui.navigation.AppDestination
 import app.revanced.manager.ui.theme.Typography
 import app.revanced.manager.ui.viewmodel.PatchClass
 import app.revanced.manager.ui.viewmodel.PatcherViewModel
 import app.revanced.patcher.extensions.PatchExtensions.description
 import app.revanced.patcher.extensions.PatchExtensions.patchName
 import app.revanced.patcher.extensions.PatchExtensions.version
-import com.xinto.taxi.BackstackNavigator
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PatchesSelectorSubscreen(
-    navigator: BackstackNavigator<AppDestination>,
-    pvm: PatcherViewModel = getViewModel()
+    pvm: PatcherViewModel = getViewModel(),
 ) {
-    val patches = rememberSaveable { pvm.getFilteredPatches() }
-    val patchesState by Variables.patches
+    val patches = rememberSaveable { pvm.getFilteredPatchesAndCheckOptions() }
     var query by mutableStateOf("")
+
 
     Scaffold(
         topBar = {
@@ -47,14 +45,6 @@ fun PatchesSelectorSubscreen(
                         text = stringResource(R.string.card_patches_header),
                         style = MaterialTheme.typography.headlineLarge
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = navigator::pop) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
                 },
                 actions = {
                     IconButton(onClick = {
@@ -107,7 +97,7 @@ fun PatchesSelectorSubscreen(
                             )
                         }
                     }
-                    LazyColumn {
+                    LazyColumn(Modifier.padding(0.dp, 2.dp)) {
 
                         if (query.isEmpty() || query.isBlank()) {
                             items(count = patches.size) {
@@ -150,7 +140,7 @@ fun PatchCard(patchClass: PatchClass, isSelected: Boolean, onSelected: () -> Uni
         enabled = !patchClass.unsupported,
         onClick = onSelected
     ) {
-        Column(modifier = Modifier.padding(12.dp, 12.dp, 12.dp, 12.dp)) {
+        Column(modifier = Modifier.padding(12.dp, 0.dp, 12.dp, 12.dp)) {
             Row {
                 Column(
                     Modifier
@@ -173,17 +163,23 @@ fun PatchCard(patchClass: PatchClass, isSelected: Boolean, onSelected: () -> Uni
                     )
                 }
                 Spacer(Modifier.weight(1f, true))
-                Column {
+                Column(modifier = Modifier.padding(0.dp, 6.dp)) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(0.dp)
+                        modifier = Modifier.padding(4.dp)
                     ) {
                         if (patchClass.hasPatchOptions) {
-                            IconButton(onClick = { }) {
-                                Icon(Icons.Default.Settings, contentDescription = "Patch Options")
+                            CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                                IconButton(onClick = { }, modifier = Modifier.size(24.dp)) {
+                                    Icon(
+                                        Icons.Outlined.Settings,
+                                        contentDescription = "Patch Options"
+                                    )
+                                }
                             }
                         }
+                        Spacer(Modifier.width(8.dp))
                         CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
                             Checkbox(
                                 enabled = !patchClass.unsupported,
@@ -207,26 +203,28 @@ fun PatchCard(patchClass: PatchClass, isSelected: Boolean, onSelected: () -> Uni
                 )
             }
             if (patchClass.unsupported) {
-                Column {
-                    Row {
-                        if (showDialog) {
-                            PatchCompatibilityDialog(
-                                onClose = { showDialog = false },
-                                patchClass = patchClass
+                CompositionLocalProvider(LocalMinimumTouchTargetEnforcement provides false) {
+                    Column {
+                        Row {
+                            if (showDialog) {
+                                PatchCompatibilityDialog(
+                                    onClose = { showDialog = false },
+                                    patchClass = patchClass,
+                                )
+                            }
+                            InputChip(
+                                selected = false,
+                                onClick = { showDialog = true },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Default.Warning,
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        contentDescription = stringResource(id = R.string.unsupported_version)
+                                    )
+                                },
+                                label = { Text(stringResource(id = R.string.unsupported_version)) }
                             )
                         }
-                        InputChip(
-                            selected = false,
-                            onClick = { showDialog = true },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Warning,
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    contentDescription = stringResource(id = R.string.unsupported_version)
-                                )
-                            },
-                            label = { Text(stringResource(id = R.string.unsupported_version)) }
-                        )
                     }
                 }
             }

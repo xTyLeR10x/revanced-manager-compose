@@ -1,7 +1,8 @@
 package app.revanced.manager.api
 
 import android.util.Log
-import app.revanced.manager.dto.github.APIRelease
+import app.revanced.manager.github.APIRelease
+import app.revanced.manager.preferences.PreferencesManager
 import app.revanced.manager.repository.GitHubRepository
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -26,10 +27,7 @@ val client = HttpClient(Android) {
     }
 }
 
-class API(private val repository: GitHubRepository) {
-
-    suspend fun downloadFile(workdir: File, asset: String, file: String) =
-        downloadAsset(workdir, findAsset(asset, file))
+class API(private val repository: GitHubRepository, private val prefs: PreferencesManager) {
 
     private suspend fun findAsset(repo: String, file: String): PatchesAsset {
         val release = repository.getLatestRelease(repo)
@@ -39,6 +37,27 @@ class API(private val repository: GitHubRepository) {
 
     private fun List<APIRelease.Asset>.findAsset(file: String) = find { asset ->
         (asset.name.contains(file) && !asset.name.contains("-sources") && !asset.name.contains("-javadoc"))
+    }
+
+    suspend fun downloadPatchBundle(workdir: File): File {
+        return try {
+            val (_, out) = downloadAsset(workdir, findAsset(prefs.srcPatches.toString(), ".jar"))
+            out
+        } catch (e: Exception) {
+            throw Exception("Failed to download patch bundle", e)
+        }
+    }
+
+    suspend fun downloadIntegrations(workdir: File): File {
+        return try {
+            val (_, out) = downloadAsset(
+                workdir,
+                findAsset(prefs.srcIntegrations.toString(), ".apk")
+            )
+            out
+        } catch (e: Exception) {
+            throw Exception("Failed to download integrations", e)
+        }
     }
 
     private suspend fun downloadAsset(

@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
-
             ReVancedManagerTheme(
                 dynamicColor = prefs.dynamicColor,
                 darkTheme = prefs.theme == Theme.SYSTEM && isSystemInDarkTheme() || prefs.theme == Theme.DARK,
@@ -52,7 +51,7 @@ class MainActivity : ComponentActivity() {
                         is AppDestination.AppSelector -> AppSelectorSubscreen(
                             navigator = navigator
                         )
-                        is AppDestination.PatchSelector -> PatchesSelectorSubscreen(navigator = navigator)
+                        is AppDestination.PatchSelector -> PatchesSelectorSubscreen()
                     }
                 }
             }
