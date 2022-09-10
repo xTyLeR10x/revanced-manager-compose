@@ -36,17 +36,17 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
             .verticalScroll(state = rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        GroupHeader(title = "Appearance")
         if (viewModel.showThemePicker) {
             ThemePicker(
                 onDismissRequest = viewModel::dismissThemePicker,
                 onConfirm = viewModel::setTheme
             )
         }
+        GroupHeader(title = "Appearance")
         ListItem(
             modifier = Modifier.clickable { viewModel.showThemePicker() },
-            leadingContent = { Icon(Icons.Default.Style, contentDescription = null) },
             headlineText = { Text(stringResource(R.string.theme)) },
+            leadingContent = { Icon(Icons.Default.Style, contentDescription = null) },
             trailingContent = { FilledTonalButton(onClick = { viewModel.showThemePicker() }) {
                 Text(text = prefs.theme.displayName)
             } }
@@ -64,6 +64,7 @@ fun SettingsScreen(viewModel: SettingsViewModel = getViewModel()) {
                 }
             )
         }
+
         Divider()
         SocialItem(R.string.github, Icons.Default.Code, viewModel::openGitHub)
     }

@@ -13,8 +13,8 @@ import kotlin.reflect.KProperty
 class PreferencesManager(
     sharedPreferences: SharedPreferences
 ) : BasePreferenceManager(sharedPreferences) {
-    var theme by enumPreference("theme", Theme.SYSTEM)
     var dynamicColor by booleanPreference("dynamic_color", true)
+    var theme by enumPreference("theme", Theme.SYSTEM)
     var srcPatches by stringPreference("src_patches", ghPatches)
     var srcIntegrations by stringPreference("src_integrations", ghIntegrations)
 }

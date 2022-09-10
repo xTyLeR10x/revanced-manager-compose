@@ -24,7 +24,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "app.revanced.manager"
+        applicationId = "app.revanced.manager_compose"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
